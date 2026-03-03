@@ -22,14 +22,10 @@ python .github/scripts/validate_plugins.py
 ## Repository Structure
 
 ```
-├── plugins/                     # 7 independent plugins
-│   └── {plugin-name}/
-│       ├── .claude-plugin/plugin.json
-│       ├── commands/*.md
-│       ├── skills/*/SKILL.md
-│       ├── skills/*/references/*.md
-│       ├── agents/*.md          # optional
-│       └── hooks/hooks.json     # optional
+├── plugins/                     # 3 consolidated plugins
+│   ├── python/                  # Linting, typing, clean code, TDD
+│   ├── fastapi/                 # FastAPI scaffolding + Alembic migrations
+│   └── tech-lead/               # Architecture, review, dev cycles, features
 ├── external_plugins/            # Third-party plugins
 ├── .claude-plugin/
 │   └── marketplace.json         # Central plugin catalog
@@ -41,12 +37,9 @@ python .github/scripts/validate_plugins.py
 
 | Plugin | Purpose | Key Commands |
 |--------|---------|--------------|
-| **ruff-lint** | Linting (ZERO noqa) | `/lint:check`, `/lint:explain` |
-| **pytest-assistant** | TDD testing | `/test:first`, `/test:fixture` |
-| **fastapi-scaffold** | Boilerplate generation | `/fastapi:module`, `/fastapi:dto` |
-| **python-typing** | Type annotations (ZERO type:ignore) | `/types:check`, `/types:explain` |
-| **alembic-migrations** | Migrations (enum handling) | `/migrate:create`, `/migrate:check` |
-| **clean-code** | SOLID, code smells | `/clean:review`, `/clean:refactor` |
+| **python** | Linting, typing, clean code, TDD | `/lint`, `/typecheck`, `/clean:review`, `/test:first` |
+| **fastapi** | FastAPI scaffolding + Alembic | `/module`, `/dto`, `/endpoint`, `/migrate:create` |
+| **tech-lead** | Architecture, review, dev cycles, features | `/design`, `/review`, `/dev`, `/features:init` |
 
 ## Core Principles
 
@@ -60,9 +53,9 @@ python .github/scripts/validate_plugins.py
 
 ```bash
 # Format: <type>(<plugin>): <description>
-feat(ruff-lint): add support for RUF100 rule
-fix(pytest-assistant): correct fixture scope handling
-docs(fastapi-scaffold): update repository pattern examples
+feat(python): add support for RUF100 rule
+fix(fastapi): correct migration enum handling
+docs(tech-lead): update architecture review examples
 ```
 
 Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`

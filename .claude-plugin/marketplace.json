@@ -1,5 +1,4 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "python-backend-plugins",
   "description": "Collection of Claude Code plugins for Python backend development with FastAPI, SQLAlchemy 2.0, and modern tooling",
   "owner": {
@@ -8,114 +7,31 @@
   },
   "plugins": [
     {
-      "name": "ruff-lint",
-      "description": "Seamless ruff integration into Claude Code workflow. ZERO noqa policy — always the proper solution instead of ignoring.",
-      "version": "1.0.0-rc.2",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/ruff-lint",
+      "name": "python",
+      "description": "Python code quality: ruff linting (ZERO noqa), type checking (ZERO type:ignore), clean code (SOLID), TDD with pytest.",
+      "version": "2.0.0",
+      "author": { "name": "Ruslan Korneev" },
+      "source": "./plugins/python",
       "category": "development",
-      "tags": ["python", "linting", "ruff", "code-quality"]
+      "tags": ["python", "linting", "ruff", "typing", "clean-code", "pytest", "tdd"]
     },
     {
-      "name": "pytest-assistant",
-      "description": "TDD-first testing with pytest. Test first, then implementation.",
-      "version": "1.0.0-rc.2",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/pytest-assistant",
-      "category": "testing",
-      "tags": ["python", "testing", "pytest", "tdd"]
-    },
-    {
-      "name": "fastapi-scaffold",
-      "description": "Boilerplate code generation for FastAPI with best practices: Repository pattern, DI, DTOs.",
-      "version": "1.0.0-rc.2",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/fastapi-scaffold",
+      "name": "fastapi",
+      "description": "FastAPI scaffolding (modules, DTOs, endpoints) + Alembic migrations with auto-fix for Enum downgrade.",
+      "version": "2.0.0",
+      "author": { "name": "Ruslan Korneev" },
+      "source": "./plugins/fastapi",
       "category": "development",
-      "tags": ["python", "fastapi", "boilerplate", "scaffolding"]
+      "tags": ["python", "fastapi", "alembic", "migrations", "sqlalchemy", "scaffolding"]
     },
     {
-      "name": "python-typing",
-      "description": "Python type annotations without type: ignore. Always the correct solution.",
-      "version": "1.0.0-rc.2",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/python-typing",
+      "name": "tech-lead",
+      "description": "Architecture design, code review (Review Pyramid), full-cycle TDD development, and structured feature specifications.",
+      "version": "2.0.0",
+      "author": { "name": "Ruslan Korneev" },
+      "source": "./plugins/tech-lead",
       "category": "development",
-      "tags": ["python", "typing", "mypy", "type-checking"]
-    },
-    {
-      "name": "alembic-migrations",
-      "description": "Alembic migrations with automatic handling of Enum and other problematic types.",
-      "version": "1.0.0-rc.2",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/alembic-migrations",
-      "category": "database",
-      "tags": ["python", "alembic", "migrations", "sqlalchemy", "database"]
-    },
-    {
-      "name": "clean-code",
-      "description": "Clean Code principles: SOLID, code smells, refactoring patterns.",
-      "version": "1.0.0-rc.2",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/clean-code",
-      "category": "development",
-      "tags": ["python", "clean-code", "solid", "refactoring"]
-    },
-    {
-      "name": "software-architect",
-      "description": "System-level architecture for Python backend: design, ADR, dependency analysis, modernization.",
-      "version": "1.0.0-rc.1",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/software-architect",
-      "category": "development",
-      "tags": ["python", "architecture", "design", "fastapi", "adr", "patterns"]
-    },
-    {
-      "name": "full-cycle-dev",
-      "description": "Full TDD development cycle orchestrator. From prompt to documented feature with explore → plan → execute workflow.",
-      "version": "1.0.0-rc.1",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/full-cycle-dev",
-      "category": "development",
-      "tags": ["python", "tdd", "workflow", "orchestration", "development"]
-    },
-    {
-      "name": "code-review",
-      "description": "Efficient code review following the Review Pyramid (Python/FastAPI). Two-phase strategy: quick automated checks + deep semantic analysis.",
-      "version": "1.0.0",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/code-review",
-      "category": "development",
-      "tags": ["python", "code-review", "fastapi", "quality", "review-pyramid"]
-    },
-    {
-      "name": "feature-list",
-      "description": "Generate structured feature specifications with BR, US, AC. Supports codebase analysis and interactive design.",
-      "version": "1.0.0-rc.1",
-      "author": {
-        "name": "Ruslan Korneev"
-      },
-      "source": "./plugins/feature-list",
-      "category": "documentation",
-      "tags": ["features", "requirements", "user-stories", "planning", "documentation"]
+      "tags": ["python", "architecture", "code-review", "tdd", "planning", "features"]
     }
   ]
 }
