@@ -32,6 +32,15 @@
       "source": "./plugins/tech-lead",
       "category": "development",
       "tags": ["python", "architecture", "code-review", "tdd", "planning", "features"]
+    },
+    {
+      "name": "linear",
+      "description": "Linear issue tracker integration: create, list, update, delete issues, kanban board, and cycle management via GraphQL API.",
+      "version": "1.0.0",
+      "author": { "name": "Ruslan Korneev" },
+      "source": "./plugins/linear",
+      "category": "project-management",
+      "tags": ["linear", "issues", "project-management", "graphql", "kanban", "sprints", "cycles"]
     }
   ]
 }
