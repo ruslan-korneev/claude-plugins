@@ -106,6 +106,26 @@ Anchors capture:
 - **APPROACH**: Chosen implementation strategy
 - **CONSTRAINTS**: Technical limitations
 
+## Explicit Phase Separation
+
+Each TDD phase should be tracked explicitly. Use TaskCreate to make phase transitions visible:
+
+```
+TaskCreate: "RED — Write failing test for <feature>"
+  → Write test, verify it fails
+  → TaskUpdate: completed
+
+TaskCreate: "GREEN — Minimal implementation for <feature>"
+  → Write just enough code to pass
+  → TaskUpdate: completed
+
+TaskCreate: "REFACTOR — Clean up <feature> implementation"
+  → Improve code quality, tests stay green
+  → TaskUpdate: completed
+```
+
+**Why:** Without explicit separation, phases blur together. Developers skip Red (writing tests after code) or skip Refactor (moving on too quickly). Tracking forces discipline.
+
 ## References
 
 - [Plan Format](references/plan-format.md) — Development plan structure
