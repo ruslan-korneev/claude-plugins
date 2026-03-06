@@ -1,24 +1,50 @@
 # Linear API Skill
 
-Manage Linear issues, boards, and cycles directly from Claude Code via GraphQL API.
+Manage Linear issues, boards, and cycles. Uses **Linear MCP** for standard operations and **plugin commands** for unique features.
 
 ## When to Use This Skill
 
 Use this skill when the user wants to:
-- Create, view, update, or delete issues in Linear
-- View a kanban board of current tasks
-- Manage sprints/cycles and track velocity
-- Add comments to issues
-- Search or filter issues by project, status, priority, assignee
+- View a kanban board of current tasks (`/linear:board`)
+- Manage sprints/cycles and track velocity (`/linear:cycle`)
+- Archive or delete issues (`/linear:delete`)
+- Edit or delete comments (`/linear:comment`)
+- Auto-enrich issues with code context (issue-enricher agent)
 
-**Trigger phrases:**
-- "Create an issue in Linear"
-- "Show my Linear tasks"
-- "What's on the board?"
-- "Current sprint status"
-- "Update issue TEAM-123"
-- "List issues for this project"
-- "Add a comment to TEAM-456"
+**For standard CRUD operations** (create, get, list, update, search issues, add comments, manage projects/teams), use the **Linear MCP tools** directly — they are provided by the official Linear MCP server.
+
+**Trigger phrases for plugin commands:**
+- "What's on the board?" / "Show kanban"
+- "Current sprint status" / "Sprint velocity"
+- "Archive issue TEAM-123"
+- "Edit comment on TEAM-456"
+
+## Architecture: MCP + Plugin
+
+### Linear MCP (standard operations)
+
+The official Linear MCP server (`mcp.linear.app`) provides ~21 tools:
+- Issues: `list_issues`, `list_my_issues`, `get_issue`, `create_issue`, `update_issue`, `search`
+- Projects: `list_projects`, `get_project`, `create_project`, `update_project`
+- Teams: `list_teams`, `get_team`
+- Users: `list_users`, `get_user`
+- Comments: `list_comments`, `create_comment`
+- Documents: `get_document`, `list_documents`, `search_documentation`
+- Workflow: `list_issue_statuses`, `get_issue_status`, `list_issue_labels`
+- Initiatives, milestones, project updates
+
+### Plugin commands (unique features)
+
+| Command | Feature |
+|---------|---------|
+| `/linear:board` | ASCII kanban board visualization |
+| `/linear:cycle` | Cycle management with velocity stats |
+| `/linear:delete` | Archive/delete issues |
+| `/linear:comment` | Edit/delete comments (MCP only supports create) |
+
+### issue-enricher agent
+
+Analyzes codebase to auto-suggest issue attributes (description, labels, estimate, priority). Works with both MCP `create_issue` and `/linear:create` flows.
 
 ## Configuration
 
@@ -40,16 +66,20 @@ Set in `~/.claude/settings.local.json`:
 }
 ```
 
-Or via shell: `export LINEAR_API_KEY=lin_api_...`
+### Linear MCP Setup
 
-### Smart Defaults
+The MCP server is configured in `.mcp.json` at the repository root. It connects automatically when the plugin is installed.
+
+To add manually: `claude mcp add --transport http linear-server https://mcp.linear.app/mcp`
+
+### Smart Defaults (plugin commands)
 
 - **Team**: `$LINEAR_TEAM` environment variable
 - **Project**: `basename $(pwd)` — auto-detected from current directory
 
-## API Pattern
+## API Pattern (for plugin commands)
 
-All calls use Linear's GraphQL API:
+Plugin commands use Linear's GraphQL API directly:
 
 ```bash
 curl -s -X POST https://api.linear.app/graphql \
@@ -80,6 +110,6 @@ Loop while `hasNextPage` is true, passing `endCursor` as `after`.
 
 ## References
 
-- [GraphQL Queries](references/graphql-queries.md) — All queries and mutations
+- [GraphQL Queries](references/graphql-queries.md) — Queries for board, cycles, delete, and comment edit/delete
 - [Filtering](references/filtering.md) — Filter syntax and operators
 - [Workflow States](references/workflow-states.md) — Status model and transitions

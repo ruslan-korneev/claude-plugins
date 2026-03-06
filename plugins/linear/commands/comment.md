@@ -1,6 +1,6 @@
 ---
 name: "linear:comment"
-description: Manage comments on a Linear issue
+description: Edit or delete comments on a Linear issue (create/list via Linear MCP)
 allowed_tools:
   - Bash
   - Read
@@ -10,19 +10,21 @@ arguments:
     description: "Issue identifier (e.g., TEAM-123)"
     required: true
   - name: action
-    description: "Action: list, add, edit, delete (default: list)"
-    required: false
+    description: "Action: edit, delete"
+    required: true
   - name: text
-    description: "Comment text in markdown (for add/edit)"
+    description: "New comment text in markdown (for edit)"
     required: false
   - name: comment-id
-    description: "Comment UUID (for edit/delete)"
-    required: false
+    description: "Comment UUID (required for edit/delete)"
+    required: true
 ---
 
 # Command /linear:comment
 
-Manage comments on a Linear issue.
+Edit or delete comments on a Linear issue.
+
+> For **listing** and **adding** comments, use the Linear MCP tools (`list_comments`, `create_comment`).
 
 ## Instructions
 
@@ -32,50 +34,27 @@ Check `LINEAR_API_KEY` and `LINEAR_TEAM` are set.
 
 ### Step 1: Resolve Issue
 
-Parse `id` to extract team key and number. Fetch issue UUID.
+Parse `id` to extract team key and number. Fetch issue UUID using `issues` query with filter.
 
 ### Step 2: Execute Action
-
-#### action=list (default)
-
-Fetch issue with comments using `issue` query. Display:
-
-```markdown
-## Comments on TEAM-123: Issue Title
-
-### John Doe (2026-03-03 14:30)
-
-Comment text here with **markdown** support.
-
----
-
-### Jane Smith (2026-03-05 09:15)
-
-Another comment here.
-
----
-
-*2 comments total*
-```
-
-If no comments, display "No comments on this issue."
-
-#### action=add
-
-Requires `text` argument. Use `commentCreate` mutation from [graphql-queries.md](../skills/linear-api/references/graphql-queries.md):
-
-```json
-{
-  "issueId": "issue-uuid",
-  "body": "Comment text"
-}
-```
-
-Display confirmation with comment preview.
 
 #### action=edit
 
 Requires `comment-id` and `text`. Use `commentUpdate` mutation:
+
+```graphql
+mutation CommentUpdate($id: String!, $input: CommentUpdateInput!) {
+  commentUpdate(id: $id, input: $input) {
+    success
+    comment {
+      id
+      body
+    }
+  }
+}
+```
+
+Variables:
 
 ```json
 {
@@ -84,8 +63,18 @@ Requires `comment-id` and `text`. Use `commentUpdate` mutation:
 }
 ```
 
+Display confirmation with updated comment preview.
+
 #### action=delete
 
-Requires `comment-id`. Use `commentDelete` mutation.
+Requires `comment-id`. Use `commentDelete` mutation:
+
+```graphql
+mutation CommentDelete($id: String!) {
+  commentDelete(id: $id) {
+    success
+  }
+}
+```
 
 Display confirmation of deletion.

@@ -1,8 +1,8 @@
 {
   "name": "linear",
-  "version": "1.0.0",
-  "description": "Linear issue tracker integration: create, list, update, delete issues, kanban board, and cycle management via GraphQL API.",
+  "version": "2.0.0",
+  "description": "Linear integration: kanban board, cycle management, issue archive/delete, and comment edit/delete. Uses official Linear MCP for standard CRUD operations.",
   "author": { "name": "Ruslan Korneev" },
   "repository": "https://github.com/ruslan-korneev/claude-plugins",
-  "keywords": ["linear", "issues", "project-management", "graphql", "kanban", "sprints", "cycles"]
+  "keywords": ["linear", "issues", "project-management", "kanban", "sprints", "cycles", "mcp"]
 }

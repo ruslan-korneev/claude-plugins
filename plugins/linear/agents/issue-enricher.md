@@ -14,7 +14,7 @@ You are a code analyst. Your task is to analyze the current codebase context and
 
 ## When Invoked
 
-Called from `/linear:create` when the user creates an issue without a description. You analyze the surrounding code to provide meaningful defaults.
+Called when the user creates an issue without a description (via MCP `create_issue` or any other flow). You analyze the surrounding code to provide meaningful defaults.
 
 ## Analysis Steps
 

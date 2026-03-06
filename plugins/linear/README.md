@@ -1,6 +1,29 @@
 # Linear Plugin for Claude Code
 
-Manage Linear issues, kanban boards, and cycles directly from Claude Code via GraphQL API.
+Extends the official Linear MCP with kanban board, cycle management, and operations not available in MCP.
+
+## Architecture
+
+**Linear MCP** (standard operations) + **Plugin commands** (unique features).
+
+### What comes from Linear MCP (~21 tools)
+
+- Issues: create, get, list, update, search
+- Projects, teams, users management
+- Comments: list, create
+- Documents and documentation search
+- Initiatives, milestones, project updates
+
+### What the plugin adds
+
+| Command | Feature |
+|---------|---------|
+| `/linear:board` | ASCII kanban board visualization |
+| `/linear:cycle` | Cycle management with velocity stats |
+| `/linear:delete` | Archive or delete issues |
+| `/linear:comment` | Edit/delete comments (MCP only supports create) |
+
+Plus the **issue-enricher agent** that analyzes code context to suggest issue attributes.
 
 ## Setup
 
@@ -21,13 +44,6 @@ Add to `~/.claude/settings.local.json`:
 }
 ```
 
-Or export in your shell profile:
-
-```bash
-export LINEAR_API_KEY="lin_api_XXXXXXXXXXXX"
-export LINEAR_TEAM="YOUR-TEAM-KEY"
-```
-
 ### 3. Install Plugin
 
 ```
@@ -35,48 +51,33 @@ export LINEAR_TEAM="YOUR-TEAM-KEY"
 /plugin install linear@python-backend-plugins
 ```
 
-## Commands
+The Linear MCP server is configured automatically via `.mcp.json` in the plugin directory.
 
-| Command | Description |
-|---------|-------------|
-| `/linear:create` | Create a new issue |
-| `/linear:get` | Get issue details |
-| `/linear:list` | List issues with filters |
-| `/linear:update` | Update an issue |
-| `/linear:delete` | Archive or delete an issue |
-| `/linear:comment` | Manage issue comments |
-| `/linear:board` | Kanban board view |
-| `/linear:cycle` | Manage cycles (sprints) |
+To add MCP manually: `claude mcp add --transport http linear-server https://mcp.linear.app/mcp`
 
 ## Examples
 
 ```
-# Create an issue
-/linear:create title="Fix auth token refresh" priority=high labels=bug
-
-# List my issues
-/linear:list assignee=me status="In Progress"
-
-# View kanban board
+# Kanban board (uses plugin GraphQL)
 /linear:board
 
-# Current sprint status
+# Current sprint with velocity stats
 /linear:cycle
+/linear:cycle action=stats
 
-# Add a comment
-/linear:comment id=TEAM-123 action=add text="Fixed in commit abc123"
+# Archive an issue
+/linear:delete id=TEAM-123
+
+# Edit a comment (MCP doesn't support this)
+/linear:comment id=TEAM-123 action=edit comment-id=uuid text="Updated text"
+
+# Standard operations use MCP tools directly:
+# "Create an issue titled Fix auth" -> MCP create_issue
+# "List my issues" -> MCP list_my_issues
+# "Search for pagination bug" -> MCP search
 ```
 
-## Smart Defaults
+## Smart Defaults (plugin commands)
 
 - **Project**: auto-detected from `basename $(pwd)`
 - **Team**: from `$LINEAR_TEAM` environment variable
-- **Sort**: by priority (urgent first)
-- **Active only**: completed/canceled issues excluded by default
-
-## Architecture
-
-- All API calls via `curl` + `jq` (no external dependencies)
-- GraphQL endpoint: `https://api.linear.app/graphql`
-- Auth: `Authorization: $LINEAR_API_KEY` header
-- Issue enricher agent suggests attributes from code context
